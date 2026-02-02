@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tbl_peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_user')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
             $table->foreignId('book_id')->constrained('tbl_books')->cascadeOnDelete();
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali');

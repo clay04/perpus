@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +51,12 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('pages.admin.users.show', compact('user'));
+        $books = Book::where('stok', '>', 0)->get();
+        return view('pages.admin.users.show', [
+            'user' => $user,
+            'books' => Book::where('stok', '>', 0)->get(),
+            'peminjaman' => $user->peminjaman()->with('book')->latest()->get(),
+        ]);
     }
 
     public function update(Request $request, User $user)

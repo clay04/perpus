@@ -16,7 +16,7 @@ class DashboardController extends Controller
             'totalUsers' => User::count(),
 
             'latestBooks' => Book::latest()->limit(5)->get(),
-            'latestUsers' => User::latest()->limit(5)->get(),
+            'latestUsers' => User::where('role', 'user')->latest()->limit(5)->get(),
         ]);
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\PeminjamanController;
+use App\Http\Controllers\Admin\PeminjamanController as AdminPeminjamanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -58,6 +59,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // Peminjaman Buku
+    Route::post('/users/{user}/pinjam', [AdminPeminjamanController::class, 'store'])->name('users.pinjam');
+    Route::put('/peminjaman/{peminjaman}/kembali', [AdminPeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
 });
 
 Route::get('/ping', function () {

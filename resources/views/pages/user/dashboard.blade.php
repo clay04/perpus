@@ -18,6 +18,15 @@
         📚 Pinjam Buku
     </button>
 
+    <div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button class="btn btn-outline-dark">
+                Logout
+            </button>
+        </form>
+    </div>
+
     <table class="table table-bordered">
         <thead>
             <tr>

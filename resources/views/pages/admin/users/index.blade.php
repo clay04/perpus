@@ -1,25 +1,29 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Manajemen User')
 
 @section('content')
-<h2>Manajemen User</h2>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Manajemen User</h3>
+
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">
+            + Tambah User
+        </a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addUser">
-        + Tambah User
-    </button>
-
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-striped mb-0 align-middle">
+        <thead class="table-light">
             <tr>
                 <th>Nama</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th width="220">Aksi</th>
+                <th width="180">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -30,14 +34,18 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ ucfirst($user->role->value) }}</td>
                 <td>
-                    <button class="btn btn-info btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#showUser{{ $user->id }}">Lihat</button>
+                    <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-info">View</a>
+                    <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#editUser{{ $user->id }}">Edit</button>
-
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#deleteUser{{ $user->id }}">Hapus</button>
+                    <form action="{{ route('admin.users.destroy', $user) }}"
+                        method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger"
+                            onclick="return confirm('Hapus user ini?')">
+                            Hapus
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endforeach
@@ -143,5 +151,6 @@
         </div>
     </div>
     @endforeach
+</div>
 
 @endsection

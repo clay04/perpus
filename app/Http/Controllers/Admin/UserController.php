@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::latest()->get();
+        $users = User::where('role', 'user')->latest()->get();
         return view('pages.admin.users.index', compact('users'));
     }
 
@@ -40,12 +40,22 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('admin.users')->with('success', 'User created successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
+    }
+
+    public function edit(User $user)
+    {
+        return view('pages.admin.users.edit', compact('user'));
+    }
+
+    public function show(User $user)
+    {
+        return view('pages.admin.users.show', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $validate = $request->validate([
+        $data = $request->validate([
             'name'     => 'required|string|max:255',
             'username' => [
                 'required','string','max:50',
@@ -57,6 +67,10 @@ class UserController extends Controller
             ],
             'role'     => 'required|in:admin,user',
         ]);
+
+        $user->update($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(User $user)

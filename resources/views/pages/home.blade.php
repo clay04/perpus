@@ -7,12 +7,12 @@
     <div class="text-center col-md-8">
 
         <h1 class="fw-bold mb-3">
-            Welcome to Perpustakaan UNKLAB
+            Selamat Datang di Sistem Informasi Perpustakaan
         </h1>
 
         <p class="text-muted mb-4">
-            This is the home page of the library application.  
-            Please login to access the system.
+            Ini adalah tampilan awal dari sistem informasi Perpustakaan.
+            Silahkan login untuk mngakses sistem.
         </p>
 
         <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-4">

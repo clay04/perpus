@@ -1,5 +1,5 @@
 <div class="col-md-3 col-lg-2 bg-primary text-white p-4">
-    <h4 class="text-center mb-4">Perpus UNKLAB</h4>
+    <h4 class="text-center mb-4">SIPerpus</h4>
 
     <ul class="nav flex-column gap-2">
         <li class="nav-item">

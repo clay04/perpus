@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+<div class="container d-flex justify-content-center align-items-center min-vh-80">
     <div class="text-center col-md-8">
 
         <h1 class="fw-bold mb-3">

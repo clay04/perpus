@@ -2,7 +2,7 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+<div class="container d-flex justify-content-center align-items-center min-vh-80">
     <div class="col-md-4">
 
         <div class="card shadow-sm">

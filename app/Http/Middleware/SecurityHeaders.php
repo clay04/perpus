@@ -17,7 +17,7 @@ class SecurityHeaders
     {
         $response = $next($request);
 
-        $request->headers->set(
+        $response->headers->set(
             'Strict-Transport-Security',
             'max-age=63072000; includeSubDomains; preload'
         );
@@ -39,13 +39,13 @@ class SecurityHeaders
 
         $response->headers->set(
             'Permissions-Policy',
-            'geolocation=(), microphone(), camera()'
+            'geolocation=(), microphone=(), camera=()'
         );
 
         $response->headers->set(
             'Content-Security-Policy',
             "default-src 'self';
-            script-src 'self' 'unsafe-inline' 'unsave-eval';
+            script-src 'self' 'unsafe-inline' 'unsafe-eval';
             style-src 'self' 'unsafe-inline';
             img-src 'self' data:;
             font-src 'self' data:;

@@ -44,7 +44,7 @@ class SecurityHeaders
 
         $response->headers->set(
             'Content-Security-Policy',
-            "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
+            "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-xxxxx'; style-src 'self' https://cdn.jsdelivr.net 'sha256-yyyyy'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
         );
 
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');

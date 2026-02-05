@@ -1,19 +1,19 @@
 console.log('App.js is loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
-    const deleteModal = new bootstrap.Modal(
-        document.getElementById('deleteModal')
-    );
+    const modalEl = document.getElementById('deleteModal');
+    if (!modalEl) return;
 
-    document.querySelectorAll('.btn-delete').forEach(button => {
-        button.addEventListener('click', () => {
-            const action = button.dataset.action;
-            const title = button.dataset.title;
+    const deleteModal = new bootstrap.Modal(modalEl);
+    const deleteForm  = document.getElementById('deleteForm');
+    const deleteTitle = document.getElementById('deleteTitle');
 
-            document.getElementById('deleteForm').action = action;
-            document.getElementById('deleteTitle').textContent = title;
-
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+            deleteForm.action = btn.dataset.action;
+            deleteTitle.textContent = btn.dataset.title;
             deleteModal.show();
         });
     });
 });
+

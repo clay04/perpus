@@ -60,10 +60,16 @@
                                     Lihat
                                 </a>
 
-                                <a href="{{ route('admin.books.confirm', $book->id) }}"
-                                class="btn btn-sm btn-danger">
-                                    Hapus
-                                </a>
+                                <form action="{{ route('admin.books.destroy', $book->id) }}"
+                                      method="POST"
+                                      class="d-inline"
+                                      onsubmit="return confirm('Yakin hapus buku ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">
+                                        Hapus
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @empty

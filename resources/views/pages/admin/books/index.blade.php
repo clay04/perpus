@@ -60,15 +60,14 @@
                                     Lihat
                                 </a>
 
-                                <form action="{{ route('admin.books.destroy', $book->id) }}"
-                                      method="POST"
-                                      class="d-inline delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">
-                                        Hapus
-                                    </button>
-                                </form>
+                                <button
+                                    class="btn btn-sm btn-danger btn-delete"
+                                    data-id="{{ $book->id }}"
+                                    data-title="{{ $book->judul }}"
+                                    data-action="{{ route('admin.books.destroy', $book->id) }}"
+                                >
+                                    Hapus
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -86,6 +85,45 @@
     <!-- PAGINATION -->
     <div class="mt-3">
         {{ $books->links() }}
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <form method="POST" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>
+                            Yakin ingin menghapus buku:
+                            <strong id="deleteTitle"></strong>?
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Batal
+                        </button>
+
+                        <button type="submit" class="btn btn-danger">
+                            Ya, Hapus
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
     </div>
 
 </div>

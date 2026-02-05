@@ -18,8 +18,8 @@
             Halaman yang Anda akses tidak tersedia atau telah dipindahkan.
         </p>
 
-        <a href="{{ url('/') }}" class="btn btn-primary mt-3">
-            Kembali ke Beranda
+        <a href="{{ url()->previous() }}" class="btn btn-secondary mt-3">
+            Kembali ke Halaman Sebelumnya
         </a>
     </div>
 </div>

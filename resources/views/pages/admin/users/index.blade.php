@@ -41,8 +41,7 @@
                         method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-sm btn-danger"
-                            onclick="return confirm('Hapus user ini?')">
+                        <button class="btn btn-sm btn-danger delete-form-user">
                             Hapus
                         </button>
                     </form>

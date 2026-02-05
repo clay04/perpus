@@ -62,8 +62,7 @@
 
                                 <form action="{{ route('admin.books.destroy', $book->id) }}"
                                       method="POST"
-                                      class="d-inline"
-                                      onsubmit="return confirm('Yakin hapus buku ini?')">
+                                      class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">

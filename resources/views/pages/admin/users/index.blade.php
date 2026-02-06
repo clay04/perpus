@@ -38,10 +38,13 @@
                     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
 
                     <form action="{{ route('admin.users.destroy', $user) }}"
-                        method="POST" class="d-inline">
+                        method="POST"
+                        class="d-inline delete-user-form">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-sm btn-danger delete-form-user">
+
+                        <button type="button"
+                                class="btn btn-sm btn-danger btn-delete-user">
                             Hapus
                         </button>
                     </form>

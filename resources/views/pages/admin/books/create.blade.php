@@ -33,15 +33,40 @@
     <!-- FORM -->
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('admin.books.store') }}" method="POST">
+            <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">File Buku (PDF)</label>
+
+                    <input type="file"
+                        id="pdfFile"
+                        name="file"
+                        data-parse-url="{{ route('admin.books.parse-pdf') }}"
+                        accept="application/pdf"
+                        class="form-control @error('file') is-invalid @enderror">
+
+                    @error('file')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
+                    <small class="text-muted">
+                        Jika PDF memiliki metadata, judul & penulis akan terisi otomatis.
+                        File tidak dapat diunduh, hanya dapat dipratinjau.
+                    </small>
+
+                    <small id="pdfStatus" class="text-muted d-none">
+                        Membaca metadata PDF...
+                    </small>
+                </div>
 
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Judul Buku</label>
                         <input type="text" name="judul"
-                               class="form-control @error('judul') is-invalid @enderror"
-                               value="{{ old('judul') }}">
+                            id="judul"
+                            class="form-control @error('judul') is-invalid @enderror"
+                            value="{{ old('judul') }}">
                         @error('judul') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
@@ -56,8 +81,9 @@
                     <div class="col-md-6">
                         <label class="form-label">Penulis</label>
                         <input type="text" name="penulis"
-                               class="form-control @error('penulis') is-invalid @enderror"
-                               value="{{ old('penulis') }}">
+                            id="penulis"
+                            class="form-control @error('penulis') is-invalid @enderror"
+                            value="{{ old('penulis') }}">
                         @error('penulis') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 

@@ -36,7 +36,16 @@
         </button>
     </div>
 
+    {{-- Daftar Buku --}}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+        </div>
+    </div>
+
     {{-- Table --}}
+    <div>
+        <strong>Buku yang di pinjam</strong>
+    </div>
     <div class="card shadow-sm">
         <div class="card-body">
             <table class="table table-bordered align-middle">

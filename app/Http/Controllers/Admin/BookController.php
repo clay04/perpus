@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\BookFile;
+use App\Models\BookPreviewRule;
+use App\Services\PdfMetadataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Process;
 
 class BookController extends Controller
 {
@@ -22,28 +26,97 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
-            'isbn' => 'required|unique:tbl_books,isbn',
-            'penulis' => 'required',
-            'kategori' => 'required',
-            'stok' => 'required|integer|min:0',
+            'file' => 'nullable|mimes:pdf|max:20480',
+            'judul' => 'nullable',
+            'isbn' => 'nullable|unique:tbl_books,isbn',
+            'penulis' => 'nullable',
+            'kategori' => 'nullable',
+            'stok' => 'nullable|integer|min:0',
         ]);
 
-        Book::create([
-            'judul'    => $request->judul,
+        $judul = $request->judul;
+        $penulis = $request->penulis;
+        $pages = null;
+        $remotePath = null;
+
+        if ($request->hasFile('file'))
+        {
+            $uploadedFile = $request->file('file');
+            $localTmpPath = $uploadedFile->getRealPath();
+
+            if (!file_exists($localTmpPath)) {
+                throw new \Exception('File upload tidak ditemukan di sistem');
+            }
+
+            $meta = PdfMetadataService::extract($localTmpPath);
+
+            $judul ??= $meta['title'] ?? 'Judul tidak terdeteksi';
+            $penulis ??= $meta['author'] ?? 'Tidak diketahui';
+            $pages ??= $meta['pages'];
+        }
+
+        $book = Book::create([
+            'judul'    => $judul,
             'isbn'     => $request->isbn,
-            'penulis'  => $request->penulis,
+            'penulis'  => $penulis,
             'kategori' => $request->kategori,
             'stok'     => $request->stok,
             'status'   => $request->stok > 0 ? 'tersedia' : 'tidak tersedia',
         ]);
+
+        if ($request->hasFile('file')) 
+        {
+            $file = $request->file('file');
+
+            $fileSize = $file->getSize();
+            $originalName = $file->getClientOriginalName();
+
+            // $remotePath = "/data/perpus_books/book_{$book->id}.pdf";
+
+            // Process::run(
+            //     "scp {$localPath} dbserverperpus@ip:{$remotePath}"
+            // );
+
+            $path = $file->storeAs(
+                'books',
+                "book_{$book->id}.pdf",
+                'public'
+            );
+
+            BookFile::create([
+                'book_id'     => $book->id,
+                'file_name'   => $originalName,
+                'file_path'   => $path,
+                'file_type'   => 'pdf',
+                'file_size'   => $fileSize,
+                'total_pages' => $pages,
+            ]);
+
+            BookPreviewRule::create([
+                'book_id' => $book->id,
+                'preview_pages' => 5,
+            ]);
+
+            //unlink($localTmpPath);
+        }
 
         return back()->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function show(Book $book)
     {
-        return view('pages.admin.books.show', compact('book'));
+        $book->load(['file', 'previewRule']);
+
+        if (!$book->file)
+            {
+                abort(404, 'File tidak di temukan');
+            }
+        
+        return view('pages.admin.books.show', [
+            'book' => $book,
+            'fileUrl' => asset('storage/'.$book->file->file_path),
+            'previewPages' => $book->previewRule->preview_pages ?? 5
+            ]);
     }
 
     public function edit(Book $book)
@@ -74,4 +147,33 @@ class BookController extends Controller
         $book->delete();
         return back()->with('success', 'Buku berhasil dihapus.');
     }
+
+    public function parsePdf(Request $request)
+    {
+        if (!$request->hasFile('file')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'File tidak ditemukan'
+            ], 422);
+        }
+
+        $file = $request->file('file');
+
+        if (!$file->isValid()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'File tidak valid'
+            ], 422);
+        }
+
+        $meta = PdfMetadataService::extract($file->getRealPath());
+
+        return response()->json([
+            'success' => true,
+            'title'   => $meta['title'] ?? '',
+            'author' => $meta['author'] ?? '',
+            'pages'  => $meta['pages'] ?? null,
+        ]);
+    }
+
 }

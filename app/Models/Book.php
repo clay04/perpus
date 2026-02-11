@@ -24,4 +24,15 @@ class Book extends Model
     {
         return $this->hasManu(Peminjaman::class);
     }
+
+    public function file()
+    {
+        return $this->hasOne(BookFile::class, 'book_id');
+    }
+
+    public function previewRule()
+    {
+        return $this->hasOne(BookPreviewRule::class, 'book_id');
+    }
+
 }

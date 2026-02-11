@@ -50,6 +50,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::post('/books/parse-pdf',[BookController::class, 'parsePdf'])->name('books.parse-pdf');
 
     // User
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -63,6 +64,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Peminjaman Buku
     Route::post('/users/{user}/pinjam', [AdminPeminjamanController::class, 'store'])->name('users.pinjam');
     Route::put('/peminjaman/{peminjaman}/kembali', [AdminPeminjamanController::class, 'kembali'])->name('peminjaman.kembali');
+
 });
 
 Route::get('/ping', function () {

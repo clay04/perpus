@@ -8,6 +8,7 @@ use App\Models\BookFile;
 use App\Models\BookPreviewRule;
 use App\Services\PdfMetadataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 
 class BookController extends Controller
@@ -134,6 +135,41 @@ class BookController extends Controller
             'fileUrl' => route('admin.books.preview', $book->id),
             'previewPages' => $book->previewRule->preview_pages ?? 5
             ]);
+    }
+
+    public function cover(Book $book)
+    {
+        $coverPath = storage_path("app/public/covers/book_{$book->id}.png");
+
+        // kalau sudah ada → langsung kirim
+        if (File::exists($coverPath)) {
+            return response()->file($coverPath);
+        }
+
+        // ambil PDF dari remote
+        $remotePath = $book->file->file_path;
+        $tmpPdf = storage_path("app/tmp_cover_{$book->id}.pdf");
+
+        Process::run(
+            "scp -i " . env('DB_FILE_SERVER_KEY') .
+            " -P " . env('DB_FILE_SERVER_PORT') . " " .
+            env('DB_FILE_SERVER_USER') . "@" .
+            env('DB_FILE_SERVER_HOST') . ":" .
+            $remotePath . " " .
+            $tmpPdf
+        );
+
+        // buat folder cover
+        File::ensureDirectoryExists(storage_path('app/public/covers'));
+
+        // convert halaman pertama ke png
+        $tmpPng = storage_path("app/public/covers/book_{$book->id}");
+
+        Process::run("pdftoppm -png -f 1 -singlefile $tmpPdf $tmpPng");
+
+        unlink($tmpPdf);
+
+        return response()->file($coverPath);
     }
 
     public function edit(Book $book)

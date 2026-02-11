@@ -28,6 +28,9 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/books/{book}/cover', [BookController::class, 'cover'])->name('books.cover');
+
+
 // Route::middleware(['role:admin'])->group(function () {
 //     Route::get('/admin', function () {
 //         return view('pages.admin.dashboard');

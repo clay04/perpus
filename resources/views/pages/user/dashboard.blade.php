@@ -24,10 +24,12 @@
         @foreach($books as $book)
         <div class="col-md-3">
             <div class="card shadow-sm h-100">
-                @if($book->file_pdf)
-                    <div class="pdf-cover"
-                        data-pdf="{{ asset('storage/'.$book->file_pdf) }}">
-                    </div>
+
+                @if($book->file)
+                <img
+                    src="{{ route('books.cover',$book->id) }}"
+                    class="card-img-top"
+                    style="height:220px; object-fit:cover;">
                 @endif
 
                 <div class="card-body d-flex flex-column">

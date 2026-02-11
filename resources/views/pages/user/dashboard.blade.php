@@ -30,13 +30,13 @@
                     <strong>{{ $book->judul }}</strong>
 
                     <small class="text-muted">
-                    Stok: {{ $book->stok }}
+                        Stok: {{ $book->stok }}
                     </small>
 
                     <div class="mt-auto">
                         <a href="{{ route('user.books.show',$book->id) }}"
-                        class="btn btn-primary btn-sm w-100">
-                        View
+                            class="btn btn-primary btn-sm w-100">
+                            View
                         </a>
                     </div>
 

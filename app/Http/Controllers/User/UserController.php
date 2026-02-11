@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function home() {
-        $book = Book::all();
+        $books = Book::all();
 
         return view('pages.user.dashboard', compact('books'));
     }

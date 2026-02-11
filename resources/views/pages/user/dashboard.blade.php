@@ -24,8 +24,13 @@
         @foreach($books as $book)
         <div class="col-md-3">
             <div class="card shadow-sm h-100">
+                @if($book->file_pdf)
+                    <div class="pdf-cover"
+                        data-pdf="{{ asset('storage/'.$book->file_pdf) }}">
+                    </div>
+                @endif
 
-                    <div class="card-body d-flex flex-column">
+                <div class="card-body d-flex flex-column">
 
                     <strong>{{ $book->judul }}</strong>
 
@@ -41,6 +46,7 @@
                     </div>
 
                 </div>
+            </div>
             </div>
         </div>
         @endforeach

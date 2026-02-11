@@ -105,17 +105,22 @@ class BookController extends Controller
     public function preview(Book $book)
     {
         $remotePath = $book->file->file_path;
-
         $tmpPath = storage_path("app/tmp_book_{$book->id}.pdf");
 
-        Process::run(
-            "scp ".
-            env('DB_FILE_SERVER_USER')."@".
-            env('DB_FILE_SERVER_HOST').":{$remotePath} ".
+        $process = Process::timeout(120)->run(
+            "scp -i " . env('DB_FILE_SERVER_KEY') .
+            " -P " . env('DB_FILE_SERVER_PORT') . " " .
+            env('DB_FILE_SERVER_USER') . "@" .
+            env('DB_FILE_SERVER_HOST') . ":" .
+            $remotePath . " " .
             $tmpPath
         );
 
-        return response()->file($tmpPath);
+        if (!$process->successful()) {
+            abort(500, 'Gagal mengambil file dari file server');
+        }
+
+        return response()->file($tmpPath)->deleteFileAfterSend(true);
     }
 
     public function show(Book $book)

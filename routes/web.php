@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\PeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanController as AdminPeminjamanController;
+use App\Http\Controllers\User\UserController as UserUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,7 +34,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // });
 
 Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
-    Route::get('/', [PeminjamanController::class, 'dashboard'])->name('dashboard');
+    Route::get('/', [UserUserController::class, 'home'])->name('home');
+
+    
 
     // Route::get('/peminjaman', [PeminjamanController::class, 'index']);
     Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');

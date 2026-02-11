@@ -117,7 +117,7 @@ class BookController extends Controller
         );
 
         if (!$process->successful()) {
-            abort(500, 'Gagal mengambil file dari file server');
+            dd($process->errorOutput());
         }
 
         return response()->file($tmpPath)->deleteFileAfterSend(true);

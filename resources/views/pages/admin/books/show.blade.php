@@ -77,15 +77,18 @@
     </div>
 
     @if (isset($fileUrl))
-    
+        <div class="card shadow-sm mt-4">
+            <div class="card-header">
+                <strong>Preview Buku ({{ $previewPages }}) halaman</strong>
+            </div>
+            <div class="card-body">
+                <div id="pdf-container"
+                    data-url="{{ $fileUrl }}"
+                    data-limit="{{ $previewPages }}">
+                </div>
+            </div>
+        </div>
     @endif
-    <div class="card shadow-sm mt-4">
-        <div class="card-header">
-            <strong>Privew Buku ({{ $previewPages }}) halaman</strong>
-        </div>
-        <div class="card-body">
-            <div id="pdf-container"></div>
-        </div>
-    </div>
+
 </div>
 @endsection

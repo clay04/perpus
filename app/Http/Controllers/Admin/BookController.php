@@ -74,9 +74,12 @@ class BookController extends Controller
             $remotePath = env('DB_FILE_STORAGE_PATH')."/book_{$book->id}.pdf";
 
             Process::run(
-                "scp {$localPath} ".
-                env('DB_FILE_SERVER_USER')."@".
-                env('DB_FILE_SERVER_HOST').":{$remotePath}"
+                "scp -i " . env('DB_FILE_SERVER_KEY') .
+                " -P " . env('DB_FILE_SERVER_PORT') . " " .
+                $localTmpPath . " " .
+                env('DB_FILE_SERVER_USER') . "@" .
+                env('DB_FILE_SERVER_HOST') . ":" .
+                $remotePath
             );
 
             BookFile::create([

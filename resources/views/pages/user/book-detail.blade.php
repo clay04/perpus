@@ -9,6 +9,12 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
+            @if($book->file)
+            <img
+                src="{{ route('books.cover',$book->id) }}"
+                class="card-img-top"
+                style="height:220px; object-fit:cover;">
+            @endif
 
             <h4>{{ $book->judul }}</h4>
 

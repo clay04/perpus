@@ -37,7 +37,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
     Route::get('/', [UserUserController::class, 'home'])->name('home');
     Route::get('/books/{id}', [UserBookController::class,'show'])->name('books.show');
-    Route::get('/riwayat', [UserController::class,'riwayat'])->name('riwayat');
+    Route::get('/riwayat', [UserUserController::class,'riwayat'])->name('riwayat');
 
     
 

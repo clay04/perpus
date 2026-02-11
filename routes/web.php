@@ -51,6 +51,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::post('/books/parse-pdf',[BookController::class, 'parsePdf'])->name('books.parse-pdf');
+    Route::get('/books/{book}/preview',[BookController::class, 'preview'])->name('books.preview');
 
     // User
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

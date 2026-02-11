@@ -67,26 +67,22 @@ class BookController extends Controller
         if ($request->hasFile('file')) 
         {
             $file = $request->file('file');
-
+            $localPath = $file->getRealPath();
             $fileSize = $file->getSize();
             $originalName = $file->getClientOriginalName();
 
-            // $remotePath = "/data/perpus_books/book_{$book->id}.pdf";
+            $remotePath = env('DB_FILE_STORAGE_PATH')."/book_{$book->id}.pdf";
 
-            // Process::run(
-            //     "scp {$localPath} dbserverperpus@ip:{$remotePath}"
-            // );
-
-            $path = $file->storeAs(
-                'books',
-                "book_{$book->id}.pdf",
-                'public'
+            Process::run(
+                "scp {$localPath} ".
+                env('DB_FILE_SERVER_USER')."@".
+                env('DB_FILE_SERVER_HOST').":{$remotePath}"
             );
 
             BookFile::create([
                 'book_id'     => $book->id,
                 'file_name'   => $originalName,
-                'file_path'   => $path,
+                'file_path'   => $remotePath,
                 'file_type'   => 'pdf',
                 'file_size'   => $fileSize,
                 'total_pages' => $pages,
@@ -103,18 +99,27 @@ class BookController extends Controller
         return back()->with('success', 'Buku berhasil ditambahkan.');
     }
 
+    public function preview(Book $book)
+    {
+        $remotePath = $book->file->file_path;
+
+        $tmpPath = storage_path("app/tmp_book_{$book->id}.pdf");
+
+        Process::run(
+            "scp ".
+            env('DB_FILE_SERVER_USER')."@".
+            env('DB_FILE_SERVER_HOST').":{$remotePath} ".
+            $tmpPath
+        );
+
+        return response()->file($tmpPath);
+    }
+
     public function show(Book $book)
     {
-        $book->load(['file', 'previewRule']);
-
-        if (!$book->file)
-            {
-                abort(404, 'File tidak di temukan');
-            }
-        
         return view('pages.admin.books.show', [
             'book' => $book,
-            'fileUrl' => asset('storage/'.$book->file->file_path),
+            'fileUrl' => route('admin.books.preview', $book->id),
             'previewPages' => $book->previewRule->preview_pages ?? 5
             ]);
     }

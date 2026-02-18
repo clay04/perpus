@@ -15,6 +15,10 @@ class Book extends Model
         'judul',
         'isbn',
         'penulis',
+        'penerbit',
+        'tahun_terbit',
+        'kota_terbit',
+        'edisi',
         'kategori',
         'stok',
         'status',
@@ -22,7 +26,13 @@ class Book extends Model
 
     public function peminjaman()
     {
-        return $this->hasManu(Peminjaman::class);
+        return $this->hasMany(Peminjaman::class);
+    }
+
+    public function activeLoan()
+    {
+        return $this->hasOne(Peminjaman::class, 'book_id')
+            ->where('status', 'dipinjam');
     }
 
     public function file()

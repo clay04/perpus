@@ -10,8 +10,15 @@ class UserBookController extends Controller
 {
     public function show($id)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::with(['file', 'previewRule'])->findOrFail($id);
 
-        return view('pages.user.book-detail', compact('book'));
+        $activeLoan = $book->peminjaman()
+            ->where('user_id', auth()->id())
+            ->where('status', 'dipinjam')
+            ->first();
+
+        $isAvailable = $book->stok > 0;
+
+        return view('pages.user.book-detail', compact('book', 'activeLoan', 'isAvailable'));
     }
 }

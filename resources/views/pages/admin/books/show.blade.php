@@ -43,6 +43,26 @@
                 </tr>
 
                 <tr>
+                    <th>Penerbit</th>
+                    <td>{{ $book->penerbit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Tahun Terbit</th>
+                    <td>{{ $book->tahun_terbit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Edisi</th>
+                    <td>{{ $book->edisi }}</td>
+                </tr>
+
+                <tr>
+                    <th>Kota Terbit</th>
+                    <td>{{ $book->kota_terbit }}</td>
+                </tr>
+
+                <tr>
                     <th>Kategori</th>
                     <td>{{ $book->kategori }}</td>
                 </tr>

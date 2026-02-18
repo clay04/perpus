@@ -6,6 +6,7 @@
     <title>@yield('title', 'Sistem Informasi Perpustakaan')</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/books.css') }}">
 </head>
 <body>
     @include('partials.navbar')
@@ -18,8 +19,5 @@
 
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="{{ asset('js/pdf-cover.js') }}"></script>
-
 </body>
 </html>

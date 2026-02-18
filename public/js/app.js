@@ -17,5 +17,10 @@ console.log('App.js is loaded');
 //     });
 // });
 
+document.querySelectorAll('.book-img').forEach(img => {
+    img.addEventListener('error', () => {
+        img.src = img.dataset.fallback;
+    });
+});
 
 

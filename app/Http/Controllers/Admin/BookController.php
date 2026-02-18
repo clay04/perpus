@@ -31,12 +31,22 @@ class BookController extends Controller
             'judul' => 'nullable',
             'isbn' => 'nullable|unique:tbl_books,isbn',
             'penulis' => 'nullable',
+            'penerbit' => 'nullable|string|max:255',
+            'tahun_terbit' => 'nullable|digits:4',
+            'kota_terbit' => 'nullable|string|max:255',
+            'edisi' => 'nullable|string|max:50',
             'kategori' => 'nullable',
             'stok' => 'nullable|integer|min:0',
         ]);
 
         $judul = $request->judul;
         $penulis = $request->penulis;
+        $isbn = $request->isbn;
+        $penerbit = $request->penerbit;
+        $tahun = $request->tahun;
+        $edisi = $request->edisi;
+        $kota = $request->kota;
+
         $pages = null;
         $remotePath = null;
 
@@ -53,16 +63,25 @@ class BookController extends Controller
 
             $judul ??= $meta['title'] ?? 'Judul tidak terdeteksi';
             $penulis ??= $meta['author'] ?? 'Tidak diketahui';
+            $isbn ??= $meta['isbn'];
+            $penerbit ??= $meta['publisher'];
+            $tahun ??= $meta['year'];
+            $edisi ??= $meta['edition'];
+            $kota ??= $meta['city'];
             $pages ??= $meta['pages'];
         }
 
         $book = Book::create([
-            'judul'    => $judul,
-            'isbn'     => $request->isbn,
-            'penulis'  => $penulis,
+            'judul' => $judul,
+            'isbn' => $isbn,
+            'penulis' => $penulis,
+            'penerbit' => $penerbit,
+            'tahun_terbit' => $tahun,
+            'edisi' => $edisi, 
+            'kota_terbit' => $kota,
             'kategori' => $request->kategori,
-            'stok'     => $request->stok,
-            'status'   => $request->stok > 0 ? 'tersedia' : 'tidak tersedia',
+            'stok' => $request->stok,
+            'status' => $request->stok > 0 ? 'tersedia' : 'tidak tersedia',
         ]);
 
         if ($request->hasFile('file')) 
@@ -222,10 +241,15 @@ class BookController extends Controller
         $meta = PdfMetadataService::extract($file->getRealPath());
 
         return response()->json([
-            'success' => true,
-            'title'   => $meta['title'] ?? '',
-            'author' => $meta['author'] ?? '',
-            'pages'  => $meta['pages'] ?? null,
+            'success'   => true,
+            'title'     => $meta['title'] ?? '',
+            'author'    => $meta['author'] ?? '',
+            'pages'     => $meta['pages'] ?? null,
+            'isbn'      => $meta['isbn'] ?? null,
+            'publisher' => $meta['publisher'] ?? null,
+            'year'      => $meta['year'] ?? null,
+            'edition'   => $meta['edition'] ?? null,
+            'city'      => $meta['city'] ?? null,
         ]);
     }
 

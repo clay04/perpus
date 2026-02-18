@@ -88,6 +88,34 @@
                     </div>
 
                     <div class="col-md-6">
+                        <label class="form-label">Penerbit</label>
+                        <input type="text" name="penerbit"
+                            class="form-control @error('penerbit') is-invalid @enderror"
+                            value="{{ old('penerbit') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Tahun Terbit</label>
+                        <input type="number" name="tahun_terbit"
+                            class="form-control @error('tahun_terbit') is-invalid @enderror"
+                            value="{{ old('tahun_terbit') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Edisi</label>
+                        <input type="text" name="edisi"
+                            class="form-control @error('edisi') is-invalid @enderror"
+                            value="{{ old('edisi') }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Kota Terbit</label>
+                        <input type="text" name="kota_terbit"
+                            class="form-control @error('kota_terbit') is-invalid @enderror"
+                            value="{{ old('kota_terbit') }}">
+                    </div>
+
+                    <div class="col-md-6">
                         <label class="form-label">Kategori</label>
                         <input type="text" name="kategori"
                                class="form-control @error('kategori') is-invalid @enderror"

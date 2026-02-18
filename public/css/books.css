@@ -1,0 +1,39 @@
+.book-card {
+    transition: .2s;
+}
+
+.book-card:hover {
+    transform: translateY(-4px);
+}
+
+.book-cover {
+    width: 100%;
+    height: 260px;          /* PAKSA tinggi sama */
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f1f1;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-meta {
+    padding-top: 10px;
+}
+
+.book-meta h6 {
+    font-size: .9rem;
+    margin: 5px 0;
+}
+
+.book-cover img {
+    transition: .3s;
+}
+
+.book-card:hover img {
+    transform: scale(1.05);
+}
